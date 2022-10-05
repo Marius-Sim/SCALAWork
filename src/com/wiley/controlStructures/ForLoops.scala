@@ -1,4 +1,4 @@
-package com.wiley.controlstructure
+package com.wiley.controlStructures
 
 object ForLoops extends App {
   for (a <- 0 to 10) {

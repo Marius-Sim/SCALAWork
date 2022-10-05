@@ -1,4 +1,4 @@
-package com.wiley.patternmatching
+package com.wiley.patternMatching
 
 object MatchNumbers extends App {
   var num = 0
