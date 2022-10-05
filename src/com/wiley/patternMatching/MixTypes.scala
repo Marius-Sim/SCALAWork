@@ -1,4 +1,4 @@
-package com.wiley.patternmatching
+package com.wiley.patternMatching
 
 object MixTypes extends App {
   println(search("Two"))

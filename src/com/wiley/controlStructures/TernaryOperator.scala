@@ -1,4 +1,4 @@
-package com.wiley.controlstructure
+package com.wiley.controlStructures
 
 object TernaryOperator {
   def main(args:Array[String]): Unit ={

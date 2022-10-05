@@ -1,4 +1,4 @@
-package com.wiley.controlstructure
+package com.wiley.controlStructures
 
 object WhileLoops extends App {
   var a = 0

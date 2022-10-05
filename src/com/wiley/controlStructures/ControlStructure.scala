@@ -1,4 +1,4 @@
-package com.wiley.controlstructure
+package com.wiley.controlStructures
 
 object ControlStructure extends App {
   var number: Int = 20
