@@ -10,6 +10,5 @@ object WhileLoops extends App {
   do {
     println(a)
     a -= 5
-  }
-  while (a != 0)
+  } while (a != 0)
 }
