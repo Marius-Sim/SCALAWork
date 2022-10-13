@@ -20,7 +20,7 @@ class Bank(name:String) {
       case 3 => createCustomer()
       case 4 => customerLogin()
       case 5 => approveLoan()
-      case _ => println("Invalid input")
+      case _ => println("Invalid input\n")
     }
     skeleton()
   }
