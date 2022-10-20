@@ -2,6 +2,10 @@ package com.wiley.engageBankingSystem
 import scala.collection.mutable
 import scala.io.StdIn.{readInt, readLine}
 
+class customerLoginError(s:String) extends Exception {
+  override def toString: String = super.toString + " - " + s
+}
+
 class Bank(name:String) {
   var customers: Set[Customer] = Set()
 
@@ -13,14 +17,14 @@ class Bank(name:String) {
     println("3. Create a new customer")
     println("4. Login as customer")
     println("5. Approve a loan")
-    val choice = readInt()
+    val choice = readLine()
     choice match {
-      case 1 => displayCustomer()
-      case 2 => displayAllCustomers()
-      case 3 => createCustomer()
-      case 4 => customerLogin()
-      case 5 => approveLoan()
-      case _ => println("Invalid input")
+      case "1" => displayCustomer()
+      case "2" => displayAllCustomers()
+      case "3" => createCustomer()
+      case "4" => customerLogin()
+      case "5" => approveLoan()
+      case _ => println("Invalid input\n"); println()
     }
     skeleton()
   }
@@ -43,16 +47,20 @@ class Bank(name:String) {
       }
     }
     println("Enter ID of loan to approve or 0 to exit")
-    val temp = readInt()
-    if (temp != 0) {
-      for (loan <- temp_loans) {
-        if (loan._1 == temp) {
-          loan._4.approved = true
-          loan._3.balance += loan._4.amount
+    try {
+      val temp = readInt()
+      if (temp != 0) {
+        for (loan <- temp_loans) {
+          if (loan._1 == temp) {
+            loan._4.approved = true
+            loan._3.balance += loan._4.amount
+          }
         }
       }
+      println("You have approved a loan\n")
+    } catch {
+      case e: Exception => println("Invalid input\n"); approveLoan()
     }
-    println("You have approved a loan\n")
   }
 
   def displayCustomer(): Unit = {
@@ -74,20 +82,29 @@ class Bank(name:String) {
     println("Or to enter both the name and the age, follow this format")
     println("First Last, Age")
     val temp = readLine()
-    if (temp.contains(",")) {
-      customers += new Customer(customers.size+1, temp.split(",")(0), temp.split(",")(1).split(" ")(1).toInt)
-    } else {
-      customers += new Customer(customers.size+1, temp)
+    try {
+      if (temp.contains(",")) {
+        customers += new Customer(customers.size+1, temp.split(",")(0), temp.split(",")(1).split(" ")(1).toInt)
+      } else {
+        customers += new Customer(customers.size+1, temp)
+      }
+      println("Customer created with ID: " + customers.size + "\n")
+    } catch {
+      case e: Exception => println("Invalid input\n"); createCustomer()
     }
-    println("Customer created with ID: " + customers.size + "\n")
   }
 
   def customerLogin(): Unit = {
     println("Enter your customer ID")
     println("To find this out, return to the main branch and select option 1 or 2")
-    val temp = readInt()
-    for (customer <- customers if customer.id == temp) {
+
+    try {
+      val temp = readInt()
+      for (customer <- customers if customer.id == temp) {
         customer.skeleton()
+      }
+    } catch {
+      case e: Exception => println("Invalid input\n"); customerLogin()
     }
   }
 }
@@ -96,7 +113,7 @@ object bankSystem extends App {
   var bank = new Bank("Bank of America")
   //Hard coded accounts, balances, loans, for testing purposes
   bank.customers += new Customer(bank.customers.size+1, "Marius Simion", 22)
-//  bank.customers += new Customer(bank.customers.size+1, "Jinesh Ranawat")
+  bank.customers += new Customer(bank.customers.size+1, "Jinesh Ranawat")
 //  bank.customers += new Customer(bank.customers.size+1, "Wiley Edge", 25)
   var temp = bank.customers.head
   temp.accounts += new BusinessAccount(temp.accounts.size)

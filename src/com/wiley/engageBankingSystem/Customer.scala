@@ -33,15 +33,15 @@ class Customer(customer_id: Int, customer_name:String) {
     println("4. Transfer to account")
     println("5. Access account")
     println("6. Return to main branch")
-    val temp = readInt()
+    val temp = readLine()
     temp match {
-      case 1 => createAccount(); skeleton()
-      case 2 => displayAccounts(); skeleton()
-      case 3 => depositToAccount(); skeleton()
-      case 4 => sendMoney(); skeleton()
-      case 5 => accessAccount(); skeleton()
-      case 6 => ""
-      case _ => println("Invalid input"); skeleton()
+      case "1" => createAccount(); skeleton()
+      case "2" => displayAccounts(); skeleton()
+      case "3" => depositToAccount(); skeleton()
+      case "4" => sendMoney(); skeleton()
+      case "5" => accessAccount(); skeleton()
+      case "6" => println()
+      case _ => println("Invalid input\n"); skeleton()
     }
   }
 
@@ -52,23 +52,32 @@ class Customer(customer_id: Int, customer_name:String) {
     for ((t,i) <- types.zipWithIndex) {
       println(i+1 + ". " + t)
     }
-    val temp = readInt()
-    temp match {
-      case 1 => accounts += new BasicAccount(accounts.size+1)
-      case 2 => accounts += new SavingsAccount(accounts.size+1)
-      case 3 => accounts += new StudentAccount(accounts.size+1)
-      case 4 => accounts += new BusinessAccount(accounts.size+1)
-      case 5 => accounts += new CreditCard(accounts.size+1)
-      case _ => println("Invalid input"); createAccount()
+    try {
+      val temp = readInt()
+      temp match {
+        case 1 => accounts += new BasicAccount(accounts.size+1)
+        case 2 => accounts += new SavingsAccount(accounts.size+1)
+        case 3 => accounts += new StudentAccount(accounts.size+1)
+        case 4 => accounts += new BusinessAccount(accounts.size+1)
+        case 5 => accounts += new CreditCard(accounts.size+1)
+        case _ => println("Invalid input\n");
+      }
+
+      println(types(temp-1) + " created with ID: " + accounts.size + "\n")
+    } catch {
+      case e: Exception => println("Invalid input\n"); createAccount()
     }
-    println(types(temp-1) + " created with ID: " + accounts.size + "\n")
   }
 
   def accessAccount(): Unit = {
     println("Enter the ID of the account you wish to access: ")
     displayAccounts()
-    val temp = readInt()
-    for (acc <- accounts) if (acc.id == temp) acc.skeleton()
+    try {
+      val temp = readInt()
+      for (acc <- accounts) if (acc.id == temp) acc.skeleton()
+    } catch {
+      case e: Exception => println("Invalid input\n"); accessAccount()
+    }
   }
 
   def displayAccounts(): Unit = {
@@ -81,26 +90,34 @@ class Customer(customer_id: Int, customer_name:String) {
   def sendMoney(): Unit = {
     println("Enter the account destination and amount, follow the format: ")
     println("From ID, To ID, amount")
-    val temp = readLine()
-    val from = temp.split(",").head.toInt
-    val to = temp.split(",")(1).split(" ")(1).toInt
-    val amount = temp.split(",").last.split(" ")(1).toDouble
-    for (acc <- accounts) {
-      if (acc.id == from) acc.balance -= amount
-      if (acc.id == to) acc.balance += amount
+    try {
+      val temp = readLine()
+      val from = temp.split(",").head.toInt
+      val to = temp.split(",")(1).split(" ")(1).toInt
+      val amount = temp.split(",").last.split(" ")(1).toDouble
+      for (acc <- accounts) {
+        if (acc.id == from) acc.balance -= amount
+        if (acc.id == to) acc.balance += amount
+      }
+      println("Transfer attempted\n")
+    } catch {
+      case e: Exception => println("Invalid input\n"); sendMoney()
     }
-    println("Transfer attempted\n")
   }
 
   def depositToAccount(): Unit = {
     println("Enter the ID of the account, and the amount to deposit, following this format:")
     println("ID, amount")
-    val temp = readLine()
-    val temp_id = temp.split(",")(0).toInt
-    val temp_amount = temp.split(" ")(1).toDouble
-    for (acc <- accounts if acc.id == temp_id) {
-      acc.balance += temp_amount
-      println(s"Deposited $temp_amount into account with ID: $temp_id \n")
+    try {
+      val temp = readLine()
+      val temp_id = temp.split(",")(0).toInt
+      val temp_amount = temp.split(" ")(1).toDouble
+      for (acc <- accounts if acc.id == temp_id) {
+        acc.balance += temp_amount
+        println(s"Deposited $temp_amount into account with ID: $temp_id \n")
+      }
+    } catch {
+      case e: Exception => println("Invalid input\n"); depositToAccount()
     }
   }
 
