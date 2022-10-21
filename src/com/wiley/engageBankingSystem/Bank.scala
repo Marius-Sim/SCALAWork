@@ -2,13 +2,13 @@ package com.wiley.engageBankingSystem
 import scala.collection.mutable
 import scala.io.StdIn.{readInt, readLine}
 
-class customerLoginError(s:String) extends Exception {
-  override def toString: String = super.toString + " - " + s
-}
-
+//Bank class is the main body that runs on an infinite loop
+// A bank will allow user to login, create a user, display accounts of individuals or as a whole, and approve loans
+//The bank stores customers in a set
 class Bank(name:String) {
   var customers: Set[Customer] = Set()
 
+  //Skeleton function that provides user with interface
   def skeleton(): Unit = {
     println("Welcome to " + name)
     println("You will be shown a list of options\nEnter the corresponding integer to proceed")
@@ -29,6 +29,8 @@ class Bank(name:String) {
     skeleton()
   }
 
+  //The approve loan method loops through all the customers, all the accounts of the customer, and all the loans for each account
+  // If approved, the balance of the requested loan is added onto the account
   def approveLoan(): Unit = {
     var temp_loans: List[(Int, String, Account, Loan)] = List()
     var count: Int = 1
@@ -63,6 +65,8 @@ class Bank(name:String) {
     }
   }
 
+  //Displays a specific customer based on their name
+  //Can potentially display more than one if customers share name
   def displayCustomer(): Unit = {
     println("Enter the name of the customer")
     val temp = readLine()
@@ -73,10 +77,12 @@ class Bank(name:String) {
     }
   }
 
+  //Displays information about every customer of the bank
   def displayAllCustomers(): Unit = {
     for (customer <- customers) customer.displayInfo()
   }
 
+  //Customer creation method, it allows the user to enter their name, name + last name, or name + last name + age
   def createCustomer(): Unit = {
     println("Enter the name of the customer")
     println("Or to enter both the name and the age, follow this format")
@@ -94,6 +100,8 @@ class Bank(name:String) {
     }
   }
 
+  //The customer is able to login
+  //Once logged in, they will be able to access the skeleton of the Customer interface
   def customerLogin(): Unit = {
     println("Enter your customer ID")
     println("To find this out, return to the main branch and select option 1 or 2")
@@ -109,6 +117,8 @@ class Bank(name:String) {
   }
 }
 
+//The object that needs to be run on start up
+//Test customers, accounts, and loans were created to showcase the functionality of the program
 object bankSystem extends App {
   var bank = new Bank("Bank of America")
   //Hard coded accounts, balances, loans, for testing purposes

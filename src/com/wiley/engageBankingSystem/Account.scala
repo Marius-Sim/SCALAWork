@@ -1,6 +1,9 @@
 package com.wiley.engageBankingSystem
 import scala.io.StdIn.{readDouble, readLine}
 
+//Account class is abstract as each specific account inherits its functionality
+//Each account, no matter the type, has to store this information
+//Such as balance, possible loans, card details
 abstract class Account {
   val id: Int
   var balance: Double = 0
@@ -10,6 +13,8 @@ abstract class Account {
   var card_year: Int = 0
   var card_cvv: Int = 0
 
+  //The account holder can request a loan of any amount
+  //The request will appear in the Bank skeleton interface for a bank operative to approve
   def requestLoan(): Unit = {
     println("Enter the amount to request: ")
     try {
@@ -21,21 +26,25 @@ abstract class Account {
     }
   }
 
+  //Randomly generates a 16 digit long card number
   def generateCard(): Long = {
     val rand = new scala.util.Random
     rand.between(1000000000000000L, 10000000000000000L)
   }
 
+  //Randomly generates a month
   def generateMonth(): Int = {
     val rand = new scala.util.Random
     rand.between(1,12)
   }
 
+  //Randomly generates the 3 digit security code on the back of the card
   def generateCVV(): Int = {
     val rand = new scala.util.Random
     rand.between(100, 999)
   }
 
+  //Function to display the card details
   def displayCardDetails(): Unit = {
     println(getClass.getSimpleName)
     println(card_number)
@@ -44,6 +53,7 @@ abstract class Account {
     println()
   }
 
+  //The user interface when handling their accounts
   def skeleton(): Unit = {
     println(s"Welcome to your ${getClass.getSimpleName}")
     println("1. Generate card details")
